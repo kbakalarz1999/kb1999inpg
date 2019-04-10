@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<conio.h>
+#include<math.h>
+#pragma argsused
+float funkcja(float a,float b,float c,float x);
+float calka(float xp,float xk, int n, float a, float b, float c);
+int main()
+{
+ float xp,xk,a,b,c; int n;
+ printf("\t\tPROGRAM OBLICZA CALKE Z FUNKCJI KWADRATOWEJ\n\n");
+ printf("Podaj a\n");
+ scanf("%f",&a);
+ printf("Podaj b\n");
+ scanf("%f",&b);
+ printf("Podaj c\n");
+ scanf("%f",&c);
+ printf("\n");
+ printf("Funkcja ma postac:  %2.1fx*x + %2.1fx + %2.1f\n\n",a,b,c);
+ printf("Podaj poczatek przedzialu\n");
+ scanf("%f",&xp);
+ printf("Podaj koniec przedzialu\n");
+ scanf("%f",&xk);
+ printf("\n");
+ printf("Podaj na ile czesci dzielic\n");
+ scanf("%d",&n);
+ printf("\n\n");
+ printf("Calka wynosi %f",calka(xp,xk,n,a,b,c));
+
+
+        getch();
+        return 0;
+}
+
+float funkcja (float a,float b,float c,float x)
+{float y ;
+ y=a*x*x+b*x+c ;
+ return y;
+         }
+
+ float calka (float xp,float xk,int n, float a,float b,float c)
+ {float y1,y2,dx,suma,x; int i;
+ suma=0;
+ dx=(xk-xp)/n;
+ for (i=0;i<n;i++)
+ {x=xp+i*dx;
+ y1=funkcja(a,b,c,x);
+ y2=funkcja(a,b,c,x+dx);
+ suma=suma+((y1+y2)/2)*dx;
+ }
+ return suma;
+ }
