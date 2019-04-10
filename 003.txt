@@ -1,0 +1,104 @@
+#pragma argsused
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<alloc.h>
+void wpisywanie(float **t,int lw,int lk);
+void wypisywanie(float **t,int lw,int lk);
+float **rezerwacja(int lw,int lk);
+void zwolnienie(float **t,int lw,int lk);
+void mnozenie(float **t1,float **t2,float **t3,int lw,int lk);
+float wyznacznik(float **t1);
+int main()
+{
+int lw1,lk1,lw2,lk2;
+float **x,**y,**z;
+printf("Liczba wierszy macierzy 1:\t");
+scanf("%d",&lw1);
+printf("Liczba kolumn macierzy 1:\t");
+scanf("%d",&lk1);
+x=rezerwacja(lw1,lk1);
+wpisywanie(x,lw1,lk1);
+printf("Liczba wierszy macierzy 2:\t");
+scanf("%d",&lw2);
+printf("Liczba kolumn macierzy 2:\t");
+scanf("%d",&lk2);
+y=rezerwacja(lw2,lk2);
+wpisywanie(y,lw2,lk2);
+clrscr();
+wypisywanie(x,lw1,lk1);
+wypisywanie(y,lw2,lk2);
+lw1=lw2;lk1=lk2;
+z=rezerwacja(lw1,lk1);
+mnozenie(x,y,z,lw1,lk1);
+wypisywanie(z,lw1,lk1);
+printf("Wyznacznik macierzy 3 jest rowny %f",wyznacznik(z));
+zwolnienie(x,lw1,lk1);
+zwolnienie(y,lw2,lk2);
+zwolnienie(z,lw1,lk1);
+getch();
+return 0;
+}
+
+float **rezerwacja(int lw,int lk)
+{
+float **t;
+int i;
+t=(float**)calloc(lw,sizeof(float));
+for(i=0;i<lw;i++)
+*(t+i)=(float*)calloc(lk,sizeof(float));
+return t;
+}
+
+void zwolnienie(float **t,int lw,int lk)
+{
+int i;
+for(i=0;i<lw;i++)
+free(*(t+i));
+free(t);
+}
+
+void wpisywanie(float **t,int lw,int lk)
+{
+int i,j;
+for(i=0;i<lw;i++)
+for(j=0;j<lk;j++)
+{
+printf("t[%d][%d]=",i,j);
+scanf("%f",*(t+i)+j);
+}
+}
+
+void wypisywanie(float **t,int lw,int lk)
+{
+int i,j;
+for(i=0;i<lw;i++)
+{
+printf("\n");
+for(j=0;j<lk;j++)
+printf("%1.0f\t",*(*(t+i)+j));
+}
+printf("\n");
+}
+
+void mnozenie(float **t1,float **t2,float **t3,int lw,int lk)
+{
+int i,j,k,m;
+for(i=0;i<lw;i++)
+for(j=0;j<lk;j++)
+{
+*(*(t3+i)+j)=0;
+for(k=0;k<lk;k++)
+{
+m=*(*(t1+i)+k)**(*(t2+k)+j);
+*(*(t3+i)+j)=*(*(t3+i)+j)+m;
+}
+}
+}
+float wyznacznik(float **t1)
+{
+float x;
+x= t1[0][0]*t1[1][1] - t1[0][1]*t1[1][0] ;
+return x;
+}
+

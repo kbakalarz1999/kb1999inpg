@@ -1,0 +1,342 @@
+
+#1 14 Wrz 2007 12:22
+
+Witam.Chcia³bym siê podzieliæ programami napisanymi w C.S¹ to podstawowe programy jakie pisze siê na uczelniach (Politechnika)
+Mam nadziejê ¿e bêd¹ one pomocne dla innych studentów.Udostêpniam je z takiego powodu, ¿e nie ka¿dy po dwóch wyk³adach z C umie ju¿ pisaæ takie "zaawansowane" dla pocz¹tkuj¹cego programy.
+
+Program za pomoc¹ szeregu oblicza wartoœæ funkcji sinusa hiperbolicznego i porównuje j¹ z wartoœci¹ otrzyman¹ z biblioteki math.h
+Code:
+
+#include<conio.h>
+#include<stdio.h>
+#include<math.h>
+#pragma argsused
+float sinh1(float x, float d);
+int main()
+{
+float x,d;
+printf("\t\tPROGRAM OBLICZA WARTOSC FUNKCJI SINUSA HIPERBOLICZNEGO\n\n");
+printf("Podaj x\n");
+scanf("%f",&x);
+printf("Podaj dokladnosc\n");
+scanf("%f",&d);
+printf("\n\nWartosc funkcji wynosi : %10.8f\n\n",sinh1(x,d));
+printf("Z funkcji standardowej wartosc wynosi: %10.8f",sinh(x));
+
+getch();
+return(0);
+}
+
+
+float sinh1(float x,float d)
+{
+float a,suma; int n;
+a=x;
+suma=x;
+n=3;
+do
+{
+a=a*x*x/(n*(n-1));
+suma=suma+a;
+n=n+2;
+}
+while (a>d);
+
+return suma;
+}
+
+
+Program mno¿y dwie macierze.
+Code:
+
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<alloc.h>
+
+void tworz_tab(int **a, int lw, int lk, char x);
+void wypisz_tab(int **a, int lw, int lk);
+void mnoz(int **a1, int **a2, int **a3, int lw1, int lk1, int lk2);
+
+main()
+{
+int **tab1,**tab2,**tab3,i;
+int lw1,lk1,lw2,lk2;
+
+clrscr();
+
+printf("\n\n\t Macierz A");
+printf("\n\n Liczba wierszy - ");
+scanf("%d",&lw1);
+printf(" Liczba kolumn - ");
+scanf("%d",&lk1);
+
+clrscr();
+
+printf("\n\n\t Macierz B");
+printf("\n\n Liczba wierszy - ");
+scanf("%d",&lw2);
+printf(" Liczba kolumn - ");
+scanf("%d",&lk2);
+
+clrscr();
+
+if(lk1!=lw2)
+{
+printf("\n\n Tych macierzy nie mozna pomnozyc gdyz");
+printf("\n ilosc kolumn macierzy A jest rozna");
+printf("\n od ilosci wierszy maciezy B");
+getch();
+}
+
+else
+
+										
+
+										{
+
+tab1=(int**)calloc(lw1,sizeof(int));
+for(i=0;i<lw1;i++)
+*(tab1+i)=(int*)calloc(lk1,sizeof(int));
+
+tab2=(int**)calloc(lw2,sizeof(int));
+for(i=0;i<lw2;i++)
+*(tab2+i)=(int*)calloc(lk2,sizeof(int));
+
+tab3=(int**)calloc(lw1,sizeof(int));
+for(i=0;i<lw1;i++)
+*(tab3+i)=(int*)calloc(lk2,sizeof(int));
+
+
+printf("\n");
+tworz_tab(tab1,lw1,lk1,'A');
+printf("\n");
+tworz_tab(tab2,lw2,lk2,'B');
+
+clrscr();
+
+printf("\n\n\t Macierz A:");
+wypisz_tab(tab1,lw1,lk1);
+printf("\n\n\t Macierz B:");
+wypisz_tab(tab2,lw2,lk2);
+
+printf("\n\n\t Wynik:");
+
+mnoz(tab1,tab2,tab3,lw1,lk1,lk2);
+wypisz_tab(tab3,lw1,lk2);
+
+getch();
+
+for(i=0;i<lw1;i++)
+free(*(tab1+i));
+
+for(i=0;i<lw2;i++)
+free(*(tab2+i));
+
+for(i=0;i<lw1;i++)
+free(*(tab3+i));
+}
+
+return 0;
+}
+
+void tworz_tab(int **a, int lw, int lk, char x)
+{
+int i,j;
+
+for(i=0;i<lw;i++)
+for(j=0;j<lk;j++)
+{
+printf(" %c [%d %d] - ",x,i,j);
+scanf("%d",*(a+i)+j);
+}
+}
+
+void wypisz_tab(int **a, int lw, int lk)
+{
+int i,j;
+
+for(i=0;i<lw;i++)
+{
+printf("\n");
+for(j=0;j<lk;j++)
+{
+printf("\t %5d",*(*(a+i)+j));
+}
+}
+}
+
+void mnoz(int **a1, int **a2, int **a3, int lw1, int lk1, int lk2)
+{
+int i,j,a;
+
+for(i=0;i<lw1;i++)
+for(j=0;j<lk2;j++)
+{
+*(*(a3+i)+j) = 0;
+for(a=0;a<lk1;a++)
+{
+*(*(a3+i)+j)=*(*(a3+i)+j) + *(*(a1+i)+a) * *(*(a2+a)+j);
+}
+}
+}
+
+
+Program równie¿ liczy sinusa hiperbolicznego tylko ¿e z iteracj¹
+Code:
+
+#pragma argsused
+#include<conio.h>
+#include<stdio.h>
+#include<math.h>
+float sinh1(float x, float d,int *i);
+
+int main()
+{
+float x,d;
+int i;
+printf("\t\tPROGRAM OBLICZA WARTOSC FUNKCJI SINUSA HIPERBOLICZNEGO\n\n");
+printf("Podaj x\n");
+scanf("%f",&x);
+printf("Podaj dokladnosc\n");
+scanf("%f",&d);
+printf("\n\nWartosc funkcji wynosi: %10.8f\n",sinh1(x,d,&i));
+printf("Liczba krokow do jej obliczenia: %d\n\n",i);
+printf("Z funkcji standradowej wartosc wynosi: %10.8f",sinh(x));
+getch();
+return(0);
+}
+
+
+float sinh1(float x,float d, int *i)
+{
+float a,suma; int n;
+a=x;
+suma=x;
+n=3;
+do
+{
+a=a*x*x/(n*(n-1));
+suma=suma+a;
+n=n+2;
+}
+while (a>d);
+ n=((n-1)/2);
+ *i=n;
+return suma;
+}
+
+
+Tablica 2-wymiarowa
+Code:
+
+#pragma argsused
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<alloc.h>
+void wpisywanie(float **t,int lw,int lk);
+void wypisywanie(float **t,int lw,int lk);
+float **rezerwacja(int lw,int lk);
+void zwolnienie(float **t,int lw,int lk);
+int zamiana(float **t,int lk,int w1,int w2);
+void wiersz(float **t,int lw,int lk,int n);
+int main()
+{
+int lw,lk,n,w1,w2,y;
+float **x;
+printf("\t\tPROGRAM POKAZUJE ZASTOSOWANIE TABLIC DWUWYMIAROWYCH\n\n");
+printf("Liczba wierszy:\t");
+scanf("%d",&lw);
+printf("Liczba kolumn:\t");
+scanf("%d",&lk);
+x=rezerwacja(lw,lk);
+wpisywanie(x,lw,lk);
+wypisywanie(x,lw,lk);
+printf("Podaj numer pierwszego wiersza do zamiany:\t");
+scanf("%d",&w1);
+printf("Podaj numer drugiego wiersza do zamiany:\t");
+scanf("%d",&w2);
+w1=w1-1;
+w2=w2-1;
+y=zamiana(x,lk,w1,w2);
+if(y==0)
+printf("Podano numer tego samego wiersza");
+else
+wypisywanie(x,lw,lk);
+printf("Podaj numer wiersza do usuniecia:\t");
+scanf("%d",&n);
+n=n-1;
+wiersz(x,lw,lk,n);
+lw=lw-1;
+wypisywanie(x,lw,lk);
+zwolnienie(x,lw,lk);
+getch();
+return 0;
+}
+
+float **rezerwacja(int lw,int lk)
+{
+float **t;
+int i;
+t=(float**)calloc(lw,sizeof(float));
+for(i=0;i<lw;i++)
+*(t+i)=(float*)calloc(lk,sizeof(float));
+return t;
+}
+
+void zwolnienie(float **t,int lw,int lk)
+{
+int i;
+for(i=0;i<lw;i++)
+free(*(t+i));
+free(t);
+}
+
+void wpisywanie(float **t,int lw,int lk)
+{
+int i,j;
+for(i=0;i<lw;i++)
+for(j=0;j<lk;j++)
+{
+printf("t[%d][%d]=",i,j);
+scanf("%f",*(t+i)+j);
+}
+}
+
+void wypisywanie(float **t,int lw,int lk)
+{
+int i,j;
+for(i=0;i<lw;i++)
+{
+printf("\n");
+for(j=0;j<lk;j++)
+printf("%1.0f\t",*(*(t+i)+j));
+}
+printf("\n");
+}
+
+void wiersz(float **t,int lw,int lk,int n)
+{
+int i,j;
+for(i=n;i<lw-1;i++)
+for(j=0;j<lk;j++)
+{
+*(*(t+i)+j)=*(*(t+i+1)+j);
+}
+}
+
+int zamiana(float **t,int lk,int w1,int w2)
+{
+int z;
+float *w=NULL;
+z=w1-w2;
+if(z==0) return 0;
+else
+{
+w=*(t+w1);
+*(t+w1)=*(t+w2);
+*(t+w2)=w;
+return 1;
+}
+}
