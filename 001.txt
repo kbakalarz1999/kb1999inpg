@@ -1,4 +1,4 @@
-#include<stdio.h>
+Makłowicz
 #include<conio.h>
 #include<math.h>
 #pragma argsused
